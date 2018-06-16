@@ -1,4 +1,5 @@
 
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +12,7 @@ public class Transpose {
     public Transpose() {
         content = new ArrayList();
     }
-
-    String f;
+    private String f;
     private boolean flagT = false; //проверка флага -t
     private boolean flagR = false; //проверка флага -r
     private String fileLocation; // местанохаждение входного файла(или имя)
@@ -24,7 +24,6 @@ public class Transpose {
         if (!args.hasNext())
             throw new IllegalArgumentException();
         outFileName = args.next();
-        System.out.println(outFileName);
         processArguments(args);
     }
 
@@ -36,7 +35,6 @@ public class Transpose {
         } catch (NumberFormatException e) {
             System.out.println("неверный формат флага '-a'");
         }
-        System.out.println(symbols);
         processArguments(args);
     }
 
@@ -48,14 +46,12 @@ public class Transpose {
             case "-o": {
                 if (outFileName != null)
                     throw new IllegalArgumentException();
-                System.out.println("o");
                 minusO(args);
                 break;
             }
             case "-a": {
                 if (symbols != null)
                     throw new IllegalArgumentException();
-                System.out.println("a");
                 minusA(args);
                 break;
             }
@@ -63,7 +59,6 @@ public class Transpose {
                 if (flagT)
                     throw new IllegalArgumentException();
                 flagT = true;
-                System.out.println("t");
                 processArguments(args);
                 break;
             }
@@ -71,7 +66,6 @@ public class Transpose {
                 if (flagR)
                     throw new IllegalArgumentException();
                 flagR = true;
-                System.out.println("r");
                 processArguments(args);
                 break;
             }
@@ -79,8 +73,6 @@ public class Transpose {
                 if (fileLocation != null)
                     throw new IllegalArgumentException();
                 fileLocation = arg;
-                System.out.println("def");
-                System.out.println(fileLocation);
                 processArguments(args);
                 break;
             }
@@ -88,20 +80,32 @@ public class Transpose {
     }
 
     public static void main(String[] args) {
-        for (int i = 0; i < args.length; i++) {
-            System.out.printf("Arg #%d: %s\n", i, args[i]);
-        }
         Transpose instance = new Transpose();
         instance.processArguments(Arrays.asList(args).listIterator());
         instance.reading();
-        instance.flagMinusA();
-        instance.flagMinusT();
-        instance.flagMinusR();
+        if (instance.checkFlagA()) {
+            instance.flagMinusA();
+        }
+        if (instance.checkFlagT()) {
+            instance.flagMinusT();
+        }
+        if (instance.checkFlagR()) {
+            instance.flagMinusR();
+        }
         try {
             instance.writing();
         } catch (FileNotFoundException e) {
             System.out.println("Writing error");
         }
+    }
+    private boolean checkFlagA() {
+        return symbols != null;
+    }
+    private boolean checkFlagT () {
+        return flagT;
+    }
+    private boolean checkFlagR() {
+        return flagR;
     }
 
     private void reading() {
@@ -130,7 +134,6 @@ public class Transpose {
     }
 
     private void flagMinusA() {
-        if (symbols == null) return;
         if (!flagR) {
             for (int i = 0; i <= content.size() - 1; i++) {
                 for (int j = 0; j <= content.get(i).size() - 1; j++) {
