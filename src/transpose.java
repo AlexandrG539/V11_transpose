@@ -134,6 +134,8 @@ public class Transpose {
     }
 
     private void flagMinusA() {
+        if (symbols == null)
+            symbols = 10;
         if (!flagR) {
             for (int i = 0; i <= content.size() - 1; i++) {
                 for (int j = 0; j <= content.get(i).size() - 1; j++) {
@@ -146,8 +148,6 @@ public class Transpose {
     }
 
     private void flagMinusT() {
-        if (!flagT)
-            return;
         if (symbols == null)
             symbols = 10;
         for (int i = 0; i <= content.size() - 1; i++) {
@@ -160,8 +160,6 @@ public class Transpose {
     }
 
     private void flagMinusR() {
-        if (!flagR)
-           return;
         if (symbols == null)
             symbols = 10;
         f = String.format("%%%ds", symbols);
